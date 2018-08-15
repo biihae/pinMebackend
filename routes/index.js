@@ -6,10 +6,10 @@ const AHP = require('ahp');
 
 
 var pool = mysql.createPool({
-	host: 'localhost',
+	host: '35.198.244.30',
 	user: 'root',
-	password: '',
-	database: 'cariLokasi',
+	password: '123456',
+	database: 'carilokasi',
 	port: 3306,
 	multipleStatements: true
 })
