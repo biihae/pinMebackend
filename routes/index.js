@@ -6,12 +6,18 @@ const AHP = require('ahp');
 
 
 var pool = mysql.createPool({
-	host: '35.198.244.30',
+	host: '35.198.235.154',
 	user: 'root',
 	password: '123456',
-	database: 'carilokasi',
+	database: 'cariLokasi',
 	port: 3306,
 	multipleStatements: true
+	// host: 'localhost',
+	// user: 'root',
+	// password: '',
+	// database: 'carilokasi',
+	// port: 3306,
+	// multipleStatements: true
 })
 
 router.post('/api/ahp', function (req, res, next) {
@@ -23,17 +29,17 @@ router.post('/api/ahp', function (req, res, next) {
 				console.log(err);
 
 			} else {
-				var block_m = [], pasfes = [], pancoran = [];
+				var blok_m = [], pasfes = [], pancoran = [];
 				for (var i = 0; i < rows.length; i++) {
 					if (rows[i].daerah == 'blok_m') {
-						block_m = rows[i]
+						blok_m = rows[i]
 					} else if (rows[i].daerah == 'pasfes') {
 						pasfes = rows[i]
 					} else if (rows[i].daerah == 'pancoran') {
 						pancoran = rows[i]
 					}
 				}
-				console.log(block_m.penduduk);
+				console.log(blok_m.penduduk);
 
 				let ITEMS = ['pasfes', 'pancoran', 'blok_m'];
 
@@ -43,19 +49,19 @@ router.post('/api/ahp', function (req, res, next) {
 					criteria: ['penduduk', 'kk', 'desa'],
 					criteriaItemRank: {
 						'penduduk': [
-							[(pasfes.penduduk / pasfes.penduduk), (pasfes.penduduk / pancoran.penduduk), (pasfes.penduduk / block_m.penduduk)],
-							[(pancoran.penduduk / pasfes.penduduk), (pancoran.penduduk / pancoran.penduduk), (pancoran.penduduk / block_m.penduduk)],
-							[(block_m.penduduk / pasfes.penduduk), (block_m.penduduk / pancoran.penduduk), (block_m.penduduk / block_m.penduduk)]
+							[(pasfes.penduduk / pasfes.penduduk), (pasfes.penduduk / pancoran.penduduk), (pasfes.penduduk / blok_m.penduduk)],
+							[(pancoran.penduduk / pasfes.penduduk), (pancoran.penduduk / pancoran.penduduk), (pancoran.penduduk / blok_m.penduduk)],
+							[(blok_m.penduduk / pasfes.penduduk), (blok_m.penduduk / pancoran.penduduk), (blok_m.penduduk / blok_m.penduduk)]
 						],
 						'kk': [
-							[(pasfes.kk / pasfes.kk), (pasfes.kk / pancoran.kk), (pasfes.kk / block_m.kk)],
-							[(pancoran.kk / pasfes.kk), (pancoran.kk / pancoran.kk), (pancoran.kk / block_m.kk)],
-							[(block_m.kk / pasfes.kk), (block_m.kk / pancoran.kk), (block_m.kk / block_m.kk)]
+							[(pasfes.kk / pasfes.kk), (pasfes.kk / pancoran.kk), (pasfes.kk / blok_m.kk)],
+							[(pancoran.kk / pasfes.kk), (pancoran.kk / pancoran.kk), (pancoran.kk / blok_m.kk)],
+							[(blok_m.kk / pasfes.kk), (blok_m.kk / pancoran.kk), (blok_m.kk / blok_m.kk)]
 						],
 						'desa': [
-							[(pasfes.desa / pasfes.desa), (pasfes.desa / pancoran.desa), (pasfes.desa / block_m.desa)],
-							[(pancoran.desa / pasfes.desa), (pancoran.desa / pancoran.desa), (pancoran.desa / block_m.desa)],
-							[(block_m.desa / pasfes.desa), (block_m.desa / pancoran.desa), (block_m.desa / block_m.desa)]
+							[(pasfes.desa / pasfes.desa), (pasfes.desa / pancoran.desa), (pasfes.desa / blok_m.desa)],
+							[(pancoran.desa / pasfes.desa), (pancoran.desa / pancoran.desa), (pancoran.desa / blok_m.desa)],
+							[(blok_m.desa / pasfes.desa), (blok_m.desa / pancoran.desa), (blok_m.desa / blok_m.desa)]
 						]
 					},
 					criteriaRank: [
@@ -71,14 +77,14 @@ router.post('/api/ahp', function (req, res, next) {
 					criteria: ['gedung', 'bus'],
 					criteriaItemRank: {
 						'gedung': [
-							[(pasfes.gedung / pasfes.gedung), (pasfes.gedung / pancoran.gedung), (pasfes.gedung / block_m.gedung)],
-							[(pancoran.gedung / pasfes.gedung), (pancoran.gedung / pancoran.gedung), (pancoran.gedung / block_m.gedung)],
-							[(block_m.gedung / pasfes.gedung), (block_m.gedung / pancoran.gedung), (block_m.gedung / block_m.gedung)]
+							[(pasfes.gedung / pasfes.gedung), (pasfes.gedung / pancoran.gedung), (pasfes.gedung / blok_m.gedung)],
+							[(pancoran.gedung / pasfes.gedung), (pancoran.gedung / pancoran.gedung), (pancoran.gedung / blok_m.gedung)],
+							[(blok_m.gedung / pasfes.gedung), (blok_m.gedung / pancoran.gedung), (blok_m.gedung / blok_m.gedung)]
 						],
 						'bus': [
-							[(pasfes.bus / pasfes.bus), (pasfes.bus / pancoran.bus), (pasfes.bus / block_m.bus)],
-							[(pancoran.bus / pasfes.bus), (pancoran.bus / pancoran.bus), (pancoran.bus / block_m.bus)],
-							[(block_m.bus / pasfes.bus), (block_m.bus / pancoran.bus), (block_m.bus / block_m.bus)]
+							[(pasfes.bus / pasfes.bus), (pasfes.bus / pancoran.bus), (pasfes.bus / blok_m.bus)],
+							[(pancoran.bus / pasfes.bus), (pancoran.bus / pancoran.bus), (pancoran.bus / blok_m.bus)],
+							[(blok_m.bus / pasfes.bus), (blok_m.bus / pancoran.bus), (blok_m.bus / blok_m.bus)]
 
 						]
 					},
@@ -95,29 +101,29 @@ router.post('/api/ahp', function (req, res, next) {
 						'rekreasi'],
 					criteriaItemRank: {
 						'rumah': [
-							[(pasfes.rumah / pasfes.rumah), (pasfes.rumah / pancoran.rumah), (pasfes.rumah / block_m.rumah)],
-							[(pancoran.rumah / pasfes.rumah), (pancoran.rumah / pancoran.rumah), (pancoran.rumah / block_m.rumah)],
-							[(block_m.rumah / pasfes.rumah), (block_m.rumah / pancoran.rumah), (block_m.rumah / block_m.rumah)]
+							[(pasfes.rumah / pasfes.rumah), (pasfes.rumah / pancoran.rumah), (pasfes.rumah / blok_m.rumah)],
+							[(pancoran.rumah / pasfes.rumah), (pancoran.rumah / pancoran.rumah), (pancoran.rumah / blok_m.rumah)],
+							[(blok_m.rumah / pasfes.rumah), (blok_m.rumah / pancoran.rumah), (blok_m.rumah / blok_m.rumah)]
 						],
 						'pemerintah': [
-							[(pasfes.pemerintah / pasfes.pemerintah), (pasfes.pemerintah / pancoran.pemerintah), (pasfes.pemerintah / block_m.pemerintah)],
-							[(pancoran.pemerintah / pasfes.pemerintah), (pancoran.pemerintah / pancoran.pemerintah), (pancoran.pemerintah / block_m.pemerintah)],
-							[(block_m.pemerintah / pasfes.pemerintah), (block_m.pemerintah / pancoran.pemerintah), (block_m.pemerintah / block_m.pemerintah)]
+							[(pasfes.pemerintah / pasfes.pemerintah), (pasfes.pemerintah / pancoran.pemerintah), (pasfes.pemerintah / blok_m.pemerintah)],
+							[(pancoran.pemerintah / pasfes.pemerintah), (pancoran.pemerintah / pancoran.pemerintah), (pancoran.pemerintah / blok_m.pemerintah)],
+							[(blok_m.pemerintah / pasfes.pemerintah), (blok_m.pemerintah / pancoran.pemerintah), (blok_m.pemerintah / blok_m.pemerintah)]
 						],
 						'pendidikan': [
-							[(pasfes.pendidikan / pasfes.pendidikan), (pasfes.pendidikan / pancoran.pendidikan), (pasfes.pendidikan / block_m.pendidikan)],
-							[(pancoran.pendidikan / pasfes.pendidikan), (pancoran.pendidikan / pancoran.pendidikan), (pancoran.pendidikan / block_m.pendidikan)],
-							[(block_m.pendidikan / pasfes.pendidikan), (block_m.pendidikan / pancoran.pendidikan), (block_m.pendidikan / block_m.pendidikan)]
+							[(pasfes.pendidikan / pasfes.pendidikan), (pasfes.pendidikan / pancoran.pendidikan), (pasfes.pendidikan / blok_m.pendidikan)],
+							[(pancoran.pendidikan / pasfes.pendidikan), (pancoran.pendidikan / pancoran.pendidikan), (pancoran.pendidikan / blok_m.pendidikan)],
+							[(blok_m.pendidikan / pasfes.pendidikan), (blok_m.pendidikan / pancoran.pendidikan), (blok_m.pendidikan / blok_m.pendidikan)]
 						],
 						'komersil': [
-							[(pasfes.komersil / pasfes.komersil), (pasfes.komersil / pancoran.komersil), (pasfes.komersil / block_m.komersil)],
-							[(pancoran.komersil / pasfes.komersil), (pancoran.komersil / pancoran.komersil), (pancoran.komersil / block_m.komersil)],
-							[(block_m.komersil / pasfes.komersil), (block_m.komersil / pancoran.komersil), (block_m.komersil / block_m.komersil)]
+							[(pasfes.komersil / pasfes.komersil), (pasfes.komersil / pancoran.komersil), (pasfes.komersil / blok_m.komersil)],
+							[(pancoran.komersil / pasfes.komersil), (pancoran.komersil / pancoran.komersil), (pancoran.komersil / blok_m.komersil)],
+							[(blok_m.komersil / pasfes.komersil), (blok_m.komersil / pancoran.komersil), (blok_m.komersil / blok_m.komersil)]
 						],
 						'rekreasi': [
-							[(pasfes.rekreasi / pasfes.rekreasi), (pasfes.rekreasi / pancoran.rekreasi), (pasfes.rekreasi / block_m.rekreasi)],
-							[(pancoran.rekreasi / pasfes.rekreasi), (pancoran.rekreasi / pancoran.rekreasi), (pancoran.rekreasi / block_m.rekreasi)],
-							[(block_m.rekreasi / pasfes.rekreasi), (block_m.rekreasi / pancoran.rekreasi), (block_m.rekreasi / block_m.rekreasi)]
+							[(pasfes.rekreasi / pasfes.rekreasi), (pasfes.rekreasi / pancoran.rekreasi), (pasfes.rekreasi / blok_m.rekreasi)],
+							[(pancoran.rekreasi / pasfes.rekreasi), (pancoran.rekreasi / pancoran.rekreasi), (pancoran.rekreasi / blok_m.rekreasi)],
+							[(blok_m.rekreasi / pasfes.rekreasi), (blok_m.rekreasi / pancoran.rekreasi), (blok_m.rekreasi / blok_m.rekreasi)]
 
 						]
 					},
@@ -135,9 +141,9 @@ router.post('/api/ahp', function (req, res, next) {
 					criteria: ['kompetitor'],
 					criteriaItemRank: {
 						'kompetitor': [
-							[(pasfes.kompetitor / pasfes.kompetitor), (pasfes.kompetitor / pancoran.kompetitor), (pasfes.kompetitor / block_m.kompetitor)],
-							[(pancoran.kompetitor / pasfes.kompetitor), (pancoran.kompetitor / pancoran.kompetitor), (pancoran.kompetitor / block_m.kompetitor)],
-							[(block_m.kompetitor / pasfes.kompetitor), (block_m.kompetitor / pancoran.kompetitor), (block_m.kompetitor / block_m.kompetitor)]
+							[(pasfes.kompetitor / pasfes.kompetitor), (pasfes.kompetitor / pancoran.kompetitor), (pasfes.kompetitor / blok_m.kompetitor)],
+							[(pancoran.kompetitor / pasfes.kompetitor), (pancoran.kompetitor / pancoran.kompetitor), (pancoran.kompetitor / blok_m.kompetitor)],
+							[(blok_m.kompetitor / pasfes.kompetitor), (blok_m.kompetitor / pancoran.kompetitor), (blok_m.kompetitor / blok_m.kompetitor)]
 						]
 					},
 					criteriaRank: [
@@ -164,7 +170,7 @@ router.post('/api/ahp', function (req, res, next) {
 				}).run();
 				console.log(output);
 
-				res.json(output)
+				res.json(output);
 			}
 		});
 	});
@@ -235,8 +241,7 @@ router.post('/login', function (req, res, next) {
 		});
 
 	});
-
-})
+});
 
 var passwordregist, nameregist;
 router.post('/register', function (req, res, next) {
